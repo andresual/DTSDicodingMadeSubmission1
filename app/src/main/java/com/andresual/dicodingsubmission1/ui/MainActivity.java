@@ -2,8 +2,11 @@ package com.andresual.dicodingsubmission1.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.andresual.dicodingsubmission1.R;
@@ -27,13 +30,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         adapter = new MovieAdapter(this);
         ListView listView = findViewById(R.id.lv_movie);
         listView.setAdapter(adapter);
 
         prepare();
         addItem();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                MovieModel movieModel = new MovieModel();
+                movieModel.setTitle(movieModelArrayList.get(i).getTitle());
+                movieModel.setDesc(movieModelArrayList.get(i).getDesc());
+                movieModel.setYear(movieModelArrayList.get(i).getYear());
+                movieModel.setImg(movieModelArrayList.get(i).getImg());
+                Intent moveWithObjectIntent = new Intent(MainActivity.this, DetailActivity.class);
+                moveWithObjectIntent.putExtra(DetailActivity.EXTRA_MOVIE, movieModel);
+                startActivity(moveWithObjectIntent);
+            }
+        });
     }
 
     private void addItem() {
